@@ -19,6 +19,22 @@ const ICE_SERVERS: RTCIceServer[] = [
   { urls: 'stun:stun2.l.google.com:19302' },
   { urls: 'stun:stun.cloudflare.com:3478' },
   { urls: 'stun:global.stun.twilio.com:3478' },
+  // Serveurs TURN pour passer les NAT stricts (4G, réseaux d'entreprise)
+  {
+    urls: 'turn:openrelay.metered.ca:80',
+    username: 'openrelayproject',
+    credential: 'openrelayproject',
+  },
+  {
+    urls: 'turn:openrelay.metered.ca:443',
+    username: 'openrelayproject',
+    credential: 'openrelayproject',
+  },
+  {
+    urls: 'turn:openrelay.metered.ca:443?transport=tcp',
+    username: 'openrelayproject',
+    credential: 'openrelayproject',
+  },
 ];
 
 export class WebRTCPeer {
@@ -110,13 +126,13 @@ export class WebRTCPeer {
         }
       };
 
-      // Set fallback timeout if P2P takes more than 7 seconds (NAT traversal barrier)
+      // Set fallback timeout if P2P takes more than 15 seconds (NAT traversal barrier, 4G/mobile)
       this.iceTimeout = window.setTimeout(() => {
         if (!this.isConnected && !this.useRelay) {
           console.warn('[WebRTCPeer] P2P ICE timeout reached. Falling back to WebSocket Relay.');
           this.fallbackToRelay();
         }
-      }, 7000);
+      }, 15000);
 
       // If initiator, create Offer
       if (this.options.isInitiator) {
