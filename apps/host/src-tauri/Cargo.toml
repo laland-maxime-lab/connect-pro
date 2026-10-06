@@ -1,0 +1,70 @@
+[package]
+name = "connectpro-host"
+version = "2.0.0"
+description = "ConnectPro Host - Remote Desktop Agent"
+authors = ["ConnectPro"]
+edition = "2021"
+
+[lib]
+name = "connectpro_host_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "connectpro-host"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# Tauri v2 core
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-shell = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-dialog = "2"
+
+# Screen capture - cross-platform 60fps
+scrap = "0.5"
+
+# OS-level mouse/keyboard control
+enigo = "0.2"
+
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# WebRTC P2P
+webrtc = "0.11"
+
+# Socket.IO client (signaling)
+rust-socketio = { version = "0.5", features = ["async"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Image encoding (VP8 frame prep)
+image = "0.25"
+
+# Unique machine ID
+machine-uid = "0.5"
+
+# Logging
+log = "0.4"
+env_logger = "0.11"
+
+# UUID
+uuid = { version = "1", features = ["v4"] }
+
+# Base64 encoding
+base64 = "0.22"
+
+# AES-256 encryption for clipboard/data
+aes-gcm = "0.10"
+rand = "0.8"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
