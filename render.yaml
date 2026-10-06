@@ -1,11 +1,11 @@
 services:
   - type: web
-    name: connect-pro
+    name: connect-pro-1
     runtime: node
     plan: free
     region: frankfurt
-    buildCommand: npm install --legacy-peer-deps && npm run build
-    startCommand: npx tsx server.ts
+    buildCommand: npm install && npm run build
+    startCommand: ./node_modules/.bin/tsx server.ts
     envVars:
       - key: NODE_ENV
         value: production
@@ -13,3 +13,5 @@ services:
         value: "22"
       - key: PORT
         value: "10000"
+      - key: RENDER_EXTERNAL_URL
+        value: https://connect-pro-1.onrender.com
